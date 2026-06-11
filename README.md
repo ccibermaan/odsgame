@@ -18,7 +18,7 @@ Para viabilizar o desenvolvimento ágil em equipe e evitar conflitos de mesclage
 ### 🧑‍💻 Desenvolvedor B: Lógica de Simulação, Motor do Jogo & Integração
 *   **Módulo de Cálculo (`js/calculator.js`):** Implementou os algoritmos de conversão de Megajoules (MJ) para créditos ESG, cálculo de saturação e a determinação de cores HSL graduais do mapa de calor.
 *   **Fluxo Principal e Estados (`js/app.js`):**
-    *   Montou o banco de dados inicial contendo 30 países com foco em economias emergentes.
+    *   Montou o banco de dados inicial contendo 31 países com foco em economias emergentes.
     *   Implementou o loop infinito de geração contínua ($6.67\text{ MJ/s}$).
     *   Desenvolveu a simulação de demanda flutuante (decaimento periódico da rede a cada 8 segundos).
     *   Integrou o salvamento de progresso automático via `localStorage`.

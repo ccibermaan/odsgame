@@ -32,12 +32,13 @@ const INITIAL_COUNTRIES = {
   ph: { name: 'Filipinas', region: 'Ásia', capacity: 20000, saturation: 18, injected: 0, initial: 18 },
   jp: { name: 'Japão', region: 'Ásia', capacity: 40000, saturation: 80, injected: 0, initial: 80 },
   
-  // Europa (Estabilizados & 1 Emergente)
+  // Europa (Estabilizados & Emergentes)
   de: { name: 'Alemanha', region: 'Europa', capacity: 38000, saturation: 78, injected: 0, initial: 78 },
   fr: { name: 'França', region: 'Europa', capacity: 35000, saturation: 82, injected: 0, initial: 82 },
   it: { name: 'Itália', region: 'Europa', capacity: 30000, saturation: 65, injected: 0, initial: 65 },
   es: { name: 'Espanha', region: 'Europa', capacity: 28000, saturation: 55, injected: 0, initial: 55 },
   ua: { name: 'Ucrânia', region: 'Europa', capacity: 22000, saturation: 15, injected: 0, initial: 15 },
+  ru: { name: 'Rússia', region: 'Europa', capacity: 45000, saturation: 20, injected: 0, initial: 20 },
 
   // América do Norte & Oceania (Estabilizados)
   us: { name: 'Estados Unidos', region: 'América do Norte', capacity: 60000, saturation: 60, injected: 0, initial: 60 },

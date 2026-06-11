@@ -61,7 +61,7 @@ async function initMap(countriesData, onSelect) {
     paths.forEach(path => {
       const countryId = path.getAttribute('id'); // ID é o ISO code em minúsculo (ex: "br")
       
-      // Se o país fizer parte da nossa simulação de 30 países, pintar sua cor inicial
+      // Se o país fizer parte da nossa simulação de 31 países, pintar sua cor inicial
       if (countriesDataRef[countryId]) {
         const countryState = countriesDataRef[countryId];
         path.style.fill = getSaturationColor(countryState.saturation);
