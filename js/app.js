@@ -55,7 +55,8 @@ let state = {
   countries: JSON.parse(JSON.stringify(INITIAL_COUNTRIES)),
   selectedCountryId: null,
   soundEnabled: true,
-  theme: 'dark'
+  theme: 'dark',
+  currentUser: null
 };
 
 // --- CACHE DE ELEMENTOS DO DOM ---
@@ -92,6 +93,21 @@ const soundText = document.getElementById('sound-text');
 const soundIconOn = document.getElementById('sound-icon-on');
 const soundIconOff = document.getElementById('sound-icon-off');
 const btnReset = document.getElementById('btn-reset');
+
+// --- CACHE DE ELEMENTOS DO LOGIN ---
+const loginOverlay = document.getElementById('login-overlay');
+const loginForm = document.getElementById('login-form');
+const loginUsernameInput = document.getElementById('login-username');
+const loginPasswordInput = document.getElementById('login-password');
+const loginConfirmPasswordInput = document.getElementById('login-confirm-password');
+const loginErrorMessage = document.getElementById('login-error-message');
+const tabLogin = document.getElementById('tab-login');
+const tabRegister = document.getElementById('tab-register');
+const btnLoginSubmit = document.getElementById('btn-login-submit');
+
+const userProfileBadge = document.getElementById('user-profile-badge');
+const activeUsernameSpan = document.getElementById('active-username');
+const btnLogout = document.getElementById('btn-logout');
 
 // --- SINTETIZADOR DE ÁUDIO (WEB AUDIO API) ---
 let audioCtx = null;
@@ -273,8 +289,9 @@ function recordHistoryData() {
 
 // --- LOCAL STORAGE E PERSISTÊNCIA ---
 function saveState() {
+  if (!state.currentUser) return;
   try {
-    localStorage.setItem('antigravity_state', JSON.stringify({
+    localStorage.setItem(`antigravity_state_${state.currentUser}`, JSON.stringify({
       energyBank: state.energyBank,
       carbonCredits: state.carbonCredits,
       totalDispatched: state.totalDispatched,
@@ -287,9 +304,26 @@ function saveState() {
   }
 }
 
-function loadState() {
+function loadState(username) {
+  if (!username) return false;
+
+  // Resetar o estado atual para os padrões antes de carregar
+  state.energyBank = 5000;
+  state.carbonCredits = 0;
+  state.totalDispatched = 0;
+  state.countries = JSON.parse(JSON.stringify(INITIAL_COUNTRIES));
+  state.selectedCountryId = null;
+  state.currentUser = username;
+
+  // Ocultar formulário de despacho e mostrar placeholder
+  if (dispNoSelection) dispNoSelection.style.display = 'flex';
+  if (dispCountryDetails) dispCountryDetails.style.display = 'none';
+
+  const activePath = document.querySelector('.active-country');
+  if (activePath) activePath.classList.remove('active-country');
+
   try {
-    const saved = localStorage.getItem('antigravity_state');
+    const saved = localStorage.getItem(`antigravity_state_${username}`);
     if (saved) {
       const parsed = JSON.parse(saved);
       state.energyBank = parsed.energyBank;
@@ -297,7 +331,7 @@ function loadState() {
       state.totalDispatched = parsed.totalDispatched || 0;
       state.soundEnabled = parsed.soundEnabled ?? true;
       state.theme = parsed.theme || 'dark';
-      
+
       // Mesclar estados para evitar falhas caso a modelagem dos países mude
       if (parsed.countries) {
         Object.keys(state.countries).forEach(id => {
@@ -307,19 +341,158 @@ function loadState() {
           }
         });
       }
-      
-      // Aplicar tema carregado
-      if (state.theme === 'light') {
-        document.body.classList.add('light-theme');
-        themeText.innerText = 'Modo Escuro';
-      }
-      
-      // Aplicar som carregado
-      updateSoundUI();
     }
+
+    // Aplicar tema carregado
+    if (state.theme === 'light') {
+      document.body.classList.add('light-theme');
+      themeText.innerText = 'Modo Escuro';
+    } else {
+      document.body.classList.remove('light-theme');
+      themeText.innerText = 'Modo Claro';
+    }
+
+    // Aplicar som carregado
+    updateSoundUI();
+    return true;
   } catch (e) {
     console.error('Erro ao ler estado salvo:', e);
+    return false;
   }
+}
+
+// --- SISTEMA DE LOGIN E CADASTRO ---
+let currentRegMode = 'login'; // 'login' ou 'register'
+
+function getUsers() {
+  try {
+    const data = localStorage.getItem('antigravity_users');
+    return data ? JSON.parse(data) : {};
+  } catch (e) {
+    console.error('Erro ao ler usuários do localStorage:', e);
+    return {};
+  }
+}
+
+function saveUsers(users) {
+  try {
+    localStorage.setItem('antigravity_users', JSON.stringify(users));
+  } catch (e) {
+    console.error('Erro ao salvar usuários no localStorage:', e);
+  }
+}
+
+function showLoginScreen() {
+  loginOverlay.style.display = 'flex';
+  loginOverlay.style.opacity = '1';
+  loginUsernameInput.value = '';
+  loginPasswordInput.value = '';
+  loginConfirmPasswordInput.value = '';
+  loginErrorMessage.style.display = 'none';
+  
+  // Esconder badge do usuário no header
+  userProfileBadge.style.display = 'none';
+  
+  // Parar loops de simulação
+  stopSimulation();
+}
+
+function hideLoginScreen() {
+  loginOverlay.style.opacity = '0';
+  setTimeout(() => {
+    loginOverlay.style.display = 'none';
+  }, 400);
+
+  // Mostrar badge do usuário no header
+  userProfileBadge.style.display = 'flex';
+  activeUsernameSpan.innerText = state.currentUser;
+  
+  // Iniciar loops de simulação
+  startSimulation();
+}
+
+function handleAuthSubmit() {
+  const username = loginUsernameInput.value.trim();
+  const password = loginPasswordInput.value;
+  
+  if (!username || !password) {
+    showAuthError('Por favor, preencha todos os campos.');
+    return;
+  }
+  
+  if (currentRegMode === 'register') {
+    const confirmPassword = loginConfirmPasswordInput.value;
+    if (password !== confirmPassword) {
+      showAuthError('As senhas não coincidem.');
+      return;
+    }
+    
+    const users = getUsers();
+    if (users[username.toLowerCase()]) {
+      showAuthError('Este nome de usuário já está cadastrado.');
+      return;
+    }
+    
+    // Cadastrar usuário
+    users[username.toLowerCase()] = {
+      username: username, // Preservar casing original
+      password: password
+    };
+    saveUsers(users);
+    
+    logToConsole(`[CADASTRO] Novo operador "${username}" registrado com sucesso.`, 'success');
+    
+    // Fazer login automático
+    performLogin(username);
+  } else {
+    // Modo Login
+    const users = getUsers();
+    const userRecord = users[username.toLowerCase()];
+    if (userRecord && userRecord.password === password) {
+      logToConsole(`[AUTENTICAÇÃO] Operador "${userRecord.username}" conectado. Conexão satélite restabelecida.`, 'success');
+      performLogin(userRecord.username);
+    } else {
+      showAuthError('Nome de usuário ou senha incorretos.');
+      sounds.error();
+    }
+  }
+}
+
+function performLogin(username) {
+  sessionStorage.setItem('antigravity_current_user', username);
+  loadState(username);
+  
+  // Inicializar gráficos/histórico
+  Object.keys(state.countries).forEach(id => {
+    chartDataPoints[id] = [Math.round(state.countries[id].saturation)];
+  });
+  
+  // Atualizar mapa e telemetria
+  updateMapColors(state.countries);
+  updateGlobalTelemetry();
+  recordHistoryData();
+  
+  hideLoginScreen();
+  sounds.success();
+}
+
+function handleLogout() {
+  if (confirm('Deseja desconectar e sair do dashboard?')) {
+    saveState();
+    logToConsole(`[SESSÃO TERMINADA] Operador "${state.currentUser}" desconectado.`, 'warning');
+    sessionStorage.removeItem('antigravity_current_user');
+    state.currentUser = null;
+    showLoginScreen();
+  }
+}
+
+function showAuthError(message) {
+  loginErrorMessage.innerText = message;
+  loginErrorMessage.style.display = 'block';
+  // Trigger shake animation
+  loginErrorMessage.style.animation = 'none';
+  loginErrorMessage.offsetHeight; /* trigger reflow */
+  loginErrorMessage.style.animation = null;
 }
 
 // --- LÓGICA DE NEGÓCIO E INTERFACES ---
@@ -517,6 +690,24 @@ function executeDispatch() {
 }
 
 // --- LOOPS DE SIMULAÇÃO (MOTOR PRINCIPAL) ---
+let generationIntervalId = null;
+let decayIntervalId = null;
+
+function stopSimulation() {
+  if (generationIntervalId) {
+    clearInterval(generationIntervalId);
+    generationIntervalId = null;
+  }
+  if (decayIntervalId) {
+    clearInterval(decayIntervalId);
+    decayIntervalId = null;
+  }
+}
+
+function startSimulation() {
+  startGenerationLoop();
+  startConsumptionDecayLoop();
+}
 
 /**
  * Loop de Geração Contínua de Energia (6.67 MJ por segundo / 400 MJ por minuto).
@@ -524,7 +715,10 @@ function executeDispatch() {
 function startGenerationLoop() {
   const generationPerSec = 400 / 60; // 6.67 MJ/s
   
-  setInterval(() => {
+  if (generationIntervalId) clearInterval(generationIntervalId);
+  
+  generationIntervalId = setInterval(() => {
+    if (!state.currentUser) return;
     state.energyBank += generationPerSec;
     updateGlobalTelemetry();
   }, 1000);
@@ -535,7 +729,10 @@ function startGenerationLoop() {
  * Roda a cada 8 segundos e reduz levemente a saturação de nações aleatórias.
  */
 function startConsumptionDecayLoop() {
-  setInterval(() => {
+  if (decayIntervalId) clearInterval(decayIntervalId);
+
+  decayIntervalId = setInterval(() => {
+    if (!state.currentUser) return;
     let stateChanged = false;
     const countryIds = Object.keys(state.countries);
     
@@ -647,7 +844,9 @@ function registerEventListeners() {
   // Reset Button
   btnReset.addEventListener('click', () => {
     if (confirm('Tem certeza de que deseja apagar os inventários e resetar o dashboard corporativo?')) {
-      localStorage.removeItem('antigravity_state');
+      if (state.currentUser) {
+        localStorage.removeItem('antigravity_state_' + state.currentUser);
+      }
       state.energyBank = 5000;
       state.carbonCredits = 0;
       state.totalDispatched = 0;
@@ -674,22 +873,51 @@ function registerEventListeners() {
       saveState();
     }
   });
+
+  // Eventos de Autenticação (Abas)
+  tabLogin.addEventListener('click', () => {
+    sounds.click();
+    currentRegMode = 'login';
+    tabLogin.classList.add('active');
+    tabRegister.classList.remove('active');
+    document.querySelectorAll('.register-only').forEach(el => el.style.display = 'none');
+    btnLoginSubmit.innerText = 'Acessar Sistema';
+    loginErrorMessage.style.display = 'none';
+    loginPasswordInput.placeholder = 'Digite sua senha';
+    loginConfirmPasswordInput.required = false;
+  });
+
+  tabRegister.addEventListener('click', () => {
+    sounds.click();
+    currentRegMode = 'register';
+    tabRegister.classList.add('active');
+    tabLogin.classList.remove('active');
+    document.querySelectorAll('.register-only').forEach(el => el.style.display = 'flex');
+    btnLoginSubmit.innerText = 'Registrar Operador';
+    loginErrorMessage.style.display = 'none';
+    loginPasswordInput.placeholder = 'Crie uma senha';
+    loginConfirmPasswordInput.required = true;
+  });
+
+  // Envio do formulário de login/cadastro
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    handleAuthSubmit();
+  });
+
+  // Botão de Logout
+  btnLogout.addEventListener('click', () => {
+    sounds.click();
+    handleLogout();
+  });
 }
 
 // --- INICIALIZAÇÃO DO SISTEMA ---
 window.addEventListener('DOMContentLoaded', async () => {
-  // 1. Carregar estado anterior do localStorage (se existir)
-  loadState();
-
-  // 2. Inicializar histórico inicial dos países para o gráfico
-  Object.keys(state.countries).forEach(id => {
-    chartDataPoints[id] = [Math.round(state.countries[id].saturation)];
-  });
-
-  // 3. Inicializar Componentes Visuais (Gráficos e Mapas)
+  // 1. Inicializar Componentes Visuais (Gráficos e Mapas)
   initChart();
   
-  // Inicializar o mapa interativo
+  // Inicializar o mapa interativo com o estado padrão (necessário para renderizar o SVG)
   const mapLoaded = await initMap(state.countries, selectCountry);
   if (mapLoaded) {
     logToConsole('Mapa geográfico interativo carregado com sucesso.', 'info');
@@ -702,16 +930,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // 4. Registrar Listeners de Eventos
+  // 2. Registrar Listeners de Eventos
   registerEventListeners();
 
-  // 5. Iniciar Simulação Principal (Loops Contínuos)
-  startGenerationLoop();
-  startConsumptionDecayLoop();
-
-  // Registrar histórico inicial e fazer a primeira telemetria
-  updateGlobalTelemetry();
-  recordHistoryData();
-  
-  logToConsole('Rede ESG Antigravity ativada. Operando a 400 MJ/min.', 'success');
+  // 3. Verificar Sessão Atual do Operador
+  const savedUser = sessionStorage.getItem('antigravity_current_user');
+  if (savedUser) {
+    // Carregar estado e iniciar simulação
+    performLogin(savedUser);
+  } else {
+    // Mostrar tela de login/cadastro
+    showLoginScreen();
+  }
 });
