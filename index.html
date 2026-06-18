@@ -41,12 +41,18 @@
         
         <div class="login-input-group">
           <label for="login-password">Senha</label>
-          <input type="password" id="login-password" placeholder="Digite sua senha" required autocomplete="current-password">
+          <div class="password-wrapper">
+            <input type="password" id="login-password" placeholder="Digite sua senha" required autocomplete="current-password">
+            <button type="button" id="btn-toggle-password-login" class="btn-toggle-password" title="Mostrar/Ocultar Senha">👁️</button>
+          </div>
         </div>
         
         <div class="login-input-group register-only" style="display: none;">
           <label for="login-confirm-password">Confirmar Senha</label>
-          <input type="password" id="login-confirm-password" placeholder="Confirme sua senha" autocomplete="new-password">
+          <div class="password-wrapper">
+            <input type="password" id="login-confirm-password" placeholder="Confirme sua senha" autocomplete="new-password">
+            <button type="button" id="btn-toggle-password-confirm" class="btn-toggle-password" title="Mostrar/Ocultar Senha">👁️</button>
+          </div>
         </div>
         
         <div id="login-error-message" class="login-error-message" style="display: none;">
@@ -55,6 +61,10 @@
         
         <button type="submit" id="btn-login-submit" class="btn-login-submit">Acessar Sistema</button>
       </form>
+      
+      <div class="login-quote">
+        <span class="quote-text">"A transição energética global começa com ações locais."</span>
+      </div>
     </div>
   </div>
 
