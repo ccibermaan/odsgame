@@ -1083,3 +1083,46 @@ body.light-theme .user-profile-badge {
   height: 16px;
   fill: currentColor;
 }
+
+/* --- ADICIONAIS: VISUALIZAÇÃO DE SENHA E FRASES --- */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 2.6rem !important; /* Espaço para o ícone do olho */
+}
+
+.btn-toggle-password {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.2rem;
+  transition: var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.btn-toggle-password:hover {
+  color: var(--accent);
+}
+
+.login-quote {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 1rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}

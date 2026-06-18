@@ -109,6 +109,17 @@ const userProfileBadge = document.getElementById('user-profile-badge');
 const activeUsernameSpan = document.getElementById('active-username');
 const btnLogout = document.getElementById('btn-logout');
 
+const btnTogglePasswordLogin = document.getElementById('btn-toggle-password-login');
+const btnTogglePasswordConfirm = document.getElementById('btn-toggle-password-confirm');
+
+const SUSTAINABILITY_QUOTES = [
+  '"A transição energética global começa com ações locais."',
+  '"Energia solar: a luz do dia alimentando o amanhã."',
+  '"Créditos de carbono incentivam a mudança real."',
+  '"Conserve hoje para ter energia limpa sempre."',
+  '"Matriz energética sustentável é a chave para o desenvolvimento ESG."'
+];
+
 // --- SINTETIZADOR DE ÁUDIO (WEB AUDIO API) ---
 let audioCtx = null;
 
