@@ -1,6 +1,6 @@
 /**
  * Módulo de Visualização Geográfica (Mapa SVG Interativo)
- * Sistema Antigravity - ESG Clean Tech
+ * Sistema World ODS - ESG Clean Tech
  */
 
 // Cache dos elementos DOM
