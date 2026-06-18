@@ -1,6 +1,6 @@
 /**
  * Inicializador e Loop Principal do Sistema
- * Sistema Antigravity - ESG Clean Tech
+ * Sistema World ODS - ESG Clean Tech
  */
 
 // --- CONFIGURAÇÃO E BASE DE DADOS INICIAL ---
@@ -302,7 +302,7 @@ function recordHistoryData() {
 function saveState() {
   if (!state.currentUser) return;
   try {
-    localStorage.setItem(`antigravity_state_${state.currentUser}`, JSON.stringify({
+    localStorage.setItem(`world_ods_state_${state.currentUser}`, JSON.stringify({
       energyBank: state.energyBank,
       carbonCredits: state.carbonCredits,
       totalDispatched: state.totalDispatched,
@@ -334,7 +334,7 @@ function loadState(username) {
   if (activePath) activePath.classList.remove('active-country');
 
   try {
-    const saved = localStorage.getItem(`antigravity_state_${username}`);
+    const saved = localStorage.getItem(`world_ods_state_${username}`);
     if (saved) {
       const parsed = JSON.parse(saved);
       state.energyBank = parsed.energyBank;
@@ -377,7 +377,7 @@ let currentRegMode = 'login'; // 'login' ou 'register'
 
 function getUsers() {
   try {
-    const data = localStorage.getItem('antigravity_users');
+    const data = localStorage.getItem('world_ods_users');
     return data ? JSON.parse(data) : {};
   } catch (e) {
     console.error('Erro ao ler usuários do localStorage:', e);
@@ -387,7 +387,7 @@ function getUsers() {
 
 function saveUsers(users) {
   try {
-    localStorage.setItem('antigravity_users', JSON.stringify(users));
+    localStorage.setItem('world_ods_users', JSON.stringify(users));
   } catch (e) {
     console.error('Erro ao salvar usuários no localStorage:', e);
   }
@@ -470,7 +470,7 @@ function handleAuthSubmit() {
 }
 
 function performLogin(username) {
-  sessionStorage.setItem('antigravity_current_user', username);
+  sessionStorage.setItem('world_ods_current_user', username);
   loadState(username);
   
   // Inicializar gráficos/histórico
@@ -491,7 +491,7 @@ function handleLogout() {
   if (confirm('Deseja desconectar e sair do dashboard?')) {
     saveState();
     logToConsole(`[SESSÃO TERMINADA] Operador "${state.currentUser}" desconectado.`, 'warning');
-    sessionStorage.removeItem('antigravity_current_user');
+    sessionStorage.removeItem('world_ods_current_user');
     state.currentUser = null;
     showLoginScreen();
   }
@@ -856,7 +856,7 @@ function registerEventListeners() {
   btnReset.addEventListener('click', () => {
     if (confirm('Tem certeza de que deseja apagar os inventários e resetar o dashboard corporativo?')) {
       if (state.currentUser) {
-        localStorage.removeItem('antigravity_state_' + state.currentUser);
+        localStorage.removeItem('world_ods_state_' + state.currentUser);
       }
       state.energyBank = 5000;
       state.carbonCredits = 0;
@@ -945,7 +945,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   registerEventListeners();
 
   // 3. Verificar Sessão Atual do Operador
-  const savedUser = sessionStorage.getItem('antigravity_current_user');
+  const savedUser = sessionStorage.getItem('world_ods_current_user');
   if (savedUser) {
     // Carregar estado e iniciar simulação
     performLogin(savedUser);

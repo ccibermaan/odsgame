@@ -1,6 +1,6 @@
 /**
  * Algoritmo de conversão de MJ para Crédito de Carbono e cálculo de Saturação.
- * Sistema Antigravity - ESG Clean Tech
+ * Sistema World ODS - ESG Clean Tech
  */
 
 // Fatores de impacto com base no estado da nação
