@@ -8,7 +8,7 @@
 /* --- VARIÁVEIS DE DESIGN SYSTEM --- */
 :root {
   /* Tema Escuro (Padrão) */
-  --bg-app: #0a0d14;
+  --bg-app: #010203; /* Even darker background for premium dark theme */
   --bg-card: rgba(18, 22, 35, 0.7);
   --bg-card-hover: rgba(26, 32, 50, 0.85);
   --border-color: rgba(255, 255, 255, 0.08);
