@@ -1,6 +1,10 @@
 /**
  * Módulo de Visualização Geográfica (Mapa SVG Interativo)
+<<<<<<< Updated upstream
  * Sistema Antigravity - ESG Clean Tech
+=======
+ * Sistema Laeleworld - ESG Clean Tech
+>>>>>>> Stashed changes
  */
 
 // Cache dos elementos DOM

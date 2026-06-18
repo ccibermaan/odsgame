@@ -1,6 +1,10 @@
 /**
  * Algoritmo de conversão de MJ para Crédito de Carbono e cálculo de Saturação.
+<<<<<<< Updated upstream
  * Sistema Antigravity - ESG Clean Tech
+=======
+ * Sistema Laeleworld - ESG Clean Tech
+>>>>>>> Stashed changes
  */
 
 // Fatores de impacto com base no estado da nação

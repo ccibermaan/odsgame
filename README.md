@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 # Antigravity — ESG Clean Tech Dashboard
+=======
+# Laeleworld — ESG Clean Tech Dashboard
+>>>>>>> Stashed changes
 
 Plataforma integrada de simulação para produtores de energia solar gerenciarem excedentes de produção, simularem a distribuição de energia limpa em redes internacionais (com foco em países emergentes) e mensurarem o impacto socioeconômico através da geração de Créditos de Carbono baseados em ESG.
 
@@ -81,7 +85,11 @@ O deploy da aplicação no Vercel é extremamente simples e leva menos de 2 minu
 ### Passo 1: Enviar seu código para o GitHub
 1. Abra o **GitHub Desktop**.
 2. Adicione este repositório local (`C:\Users\26012421\Documents\GitHub\odsgame`) no GitHub Desktop através do menu `File > Add local repository...`.
+<<<<<<< Updated upstream
 3. Escreva uma mensagem de commit (ex: "Initial commit: Antigravity Dashboard") e clique em **Commit to main**.
+=======
+3. Escreva uma mensagem de commit (ex: "Initial commit: Laeleworld Dashboard") e clique em **Commit to main**.
+>>>>>>> Stashed changes
 4. Clique em **Publish repository** para criar o repositório e subir o código no seu GitHub pessoal.
 
 ### Passo 2: Vincular o Repositório no Vercel

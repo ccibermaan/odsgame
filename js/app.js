@@ -1,6 +1,10 @@
 /**
  * Inicializador e Loop Principal do Sistema
+<<<<<<< Updated upstream
  * Sistema Antigravity - ESG Clean Tech
+=======
+ * Sistema Laeleworld - ESG Clean Tech
+>>>>>>> Stashed changes
  */
 
 // --- CONFIGURAÇÃO E BASE DE DADOS INICIAL ---
@@ -302,7 +306,11 @@ function recordHistoryData() {
 function saveState() {
   if (!state.currentUser) return;
   try {
+<<<<<<< Updated upstream
     localStorage.setItem(`antigravity_state_${state.currentUser}`, JSON.stringify({
+=======
+    localStorage.setItem(`laeleworld_state_${state.currentUser}`, JSON.stringify({
+>>>>>>> Stashed changes
       energyBank: state.energyBank,
       carbonCredits: state.carbonCredits,
       totalDispatched: state.totalDispatched,
@@ -334,7 +342,11 @@ function loadState(username) {
   if (activePath) activePath.classList.remove('active-country');
 
   try {
+<<<<<<< Updated upstream
     const saved = localStorage.getItem(`antigravity_state_${username}`);
+=======
+    const saved = localStorage.getItem(`laeleworld_state_${username}`);
+>>>>>>> Stashed changes
     if (saved) {
       const parsed = JSON.parse(saved);
       state.energyBank = parsed.energyBank;
@@ -377,7 +389,11 @@ let currentRegMode = 'login'; // 'login' ou 'register'
 
 function getUsers() {
   try {
+<<<<<<< Updated upstream
     const data = localStorage.getItem('antigravity_users');
+=======
+    const data = localStorage.getItem('laeleworld_users');
+>>>>>>> Stashed changes
     return data ? JSON.parse(data) : {};
   } catch (e) {
     console.error('Erro ao ler usuários do localStorage:', e);
@@ -387,7 +403,11 @@ function getUsers() {
 
 function saveUsers(users) {
   try {
+<<<<<<< Updated upstream
     localStorage.setItem('antigravity_users', JSON.stringify(users));
+=======
+    localStorage.setItem('laeleworld_users', JSON.stringify(users));
+>>>>>>> Stashed changes
   } catch (e) {
     console.error('Erro ao salvar usuários no localStorage:', e);
   }
@@ -470,7 +490,11 @@ function handleAuthSubmit() {
 }
 
 function performLogin(username) {
+<<<<<<< Updated upstream
   sessionStorage.setItem('antigravity_current_user', username);
+=======
+  sessionStorage.setItem('laeleworld_current_user', username);
+>>>>>>> Stashed changes
   loadState(username);
   
   // Inicializar gráficos/histórico
@@ -491,7 +515,11 @@ function handleLogout() {
   if (confirm('Deseja desconectar e sair do dashboard?')) {
     saveState();
     logToConsole(`[SESSÃO TERMINADA] Operador "${state.currentUser}" desconectado.`, 'warning');
+<<<<<<< Updated upstream
     sessionStorage.removeItem('antigravity_current_user');
+=======
+    sessionStorage.removeItem('laeleworld_current_user');
+>>>>>>> Stashed changes
     state.currentUser = null;
     showLoginScreen();
   }
@@ -856,7 +884,11 @@ function registerEventListeners() {
   btnReset.addEventListener('click', () => {
     if (confirm('Tem certeza de que deseja apagar os inventários e resetar o dashboard corporativo?')) {
       if (state.currentUser) {
+<<<<<<< Updated upstream
         localStorage.removeItem('antigravity_state_' + state.currentUser);
+=======
+        localStorage.removeItem('laeleworld_state_' + state.currentUser);
+>>>>>>> Stashed changes
       }
       state.energyBank = 5000;
       state.carbonCredits = 0;
@@ -945,7 +977,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   registerEventListeners();
 
   // 3. Verificar Sessão Atual do Operador
+<<<<<<< Updated upstream
   const savedUser = sessionStorage.getItem('antigravity_current_user');
+=======
+  const savedUser = sessionStorage.getItem('laeleworld_current_user');
+>>>>>>> Stashed changes
   if (savedUser) {
     // Carregar estado e iniciar simulação
     performLogin(savedUser);
