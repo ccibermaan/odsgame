@@ -8,9 +8,15 @@
 /* --- VARIÁVEIS DE DESIGN SYSTEM --- */
 :root {
   /* Tema Escuro (Padrão) */
+<<<<<<< Updated upstream
   --bg-app: #141926;
   --bg-card: rgba(18, 22, 35, 0.7);
   --bg-card-hover: rgba(26, 32, 50, 0.85);
+=======
+  --bg-app: #0a192f;
+  --bg-card: rgba(17, 34, 64, 0.7);
+  --bg-card-hover: rgba(23, 42, 77, 0.85);
+>>>>>>> Stashed changes
   --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
@@ -867,7 +873,11 @@ footer a:hover {
   left: 0;
   width: 100%;
   height: 100%;
+<<<<<<< Updated upstream
   background: rgba(20, 25, 38, 0.9);
+=======
+  background: rgba(10, 25, 47, 0.9);
+>>>>>>> Stashed changes
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   display: flex;
