@@ -12,7 +12,11 @@
 /* --- VARIÁVEIS DE DESIGN SYSTEM --- */
 :root {
   /* Tema Escuro (Padrão) */
+<<<<<<< Updated upstream
   --bg-app: #0a0d14;
+=======
+  --bg-app: #0f131d;
+>>>>>>> Stashed changes
   --bg-card: rgba(18, 22, 35, 0.7);
   --bg-card-hover: rgba(26, 32, 50, 0.85);
   --border-color: rgba(255, 255, 255, 0.08);
@@ -871,7 +875,11 @@ footer a:hover {
   left: 0;
   width: 100%;
   height: 100%;
+<<<<<<< Updated upstream
   background: rgba(10, 13, 20, 0.9);
+=======
+  background: rgba(15, 19, 29, 0.9);
+>>>>>>> Stashed changes
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   display: flex;
