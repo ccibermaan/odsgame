@@ -1136,3 +1136,38 @@ body.light-theme .user-profile-badge {
   line-height: 1.4;
   margin-top: 0.5rem;
 }
+
+/* --- BADGE FECAP NO CANTO --- */
+.fecap-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(11, 25, 51, 0.85);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
+  transition: var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fecap-badge:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.fecap-badge img {
+  height: 35px;
+  width: auto;
+  display: block;
+}
+
+body.light-theme .fecap-badge {
+  background: rgba(255, 255, 255, 0.85);
+}
